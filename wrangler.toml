@@ -1,0 +1,13 @@
+name = "trendlab-ai"
+main = "worker/index.ts"
+compatibility_date = "2025-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[vars]
+AI_BASE_URL = "https://api.openai.com/v1"
+AI_MODEL = "gpt-4.1-mini"
