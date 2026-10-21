@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import type { FormEvent } from "react";
 import {
   ArrowDownWideNarrow, ArrowUpRight, Bookmark, Check, ChevronDown,
   CircleHelp, Clock3, ExternalLink, Filter, Flame, Heart, History,
@@ -85,7 +86,7 @@ export default function App() {
       ? current.filter(item => item.video.id !== video.id)
       : [{ id: video.id, savedAt: new Date().toISOString(), video, ...(activeVideo?.id === video.id && adaptation ? { adaptation } : {}) }, ...current]);
   }
-  async function searchVideos(event?: React.FormEvent) {
+  async function searchVideos(event?: FormEvent) {
     event?.preventDefault();
     const term = query.trim();
     if (!term) { setError("Введи тему или ключевые слова для поиска."); return; }
