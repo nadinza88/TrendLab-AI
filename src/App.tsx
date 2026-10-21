@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import {
   ArrowDownWideNarrow, ArrowUpRight, Bookmark, Check, ChevronDown,
-  CircleHelp, Clock3, ExternalLink, Filter, Flame, Heart, History,
+  CircleHelp, ExternalLink, Filter, Flame, Heart, History,
   Instagram, LoaderCircle, Play, Search, Settings2, Sparkles, Trash2,
   TrendingUp, Youtube, Zap
 } from "lucide-react";
@@ -132,7 +132,8 @@ export default function App() {
     setActiveTab("discover");
   }
   function copyText(text: string) {
-    void navigator.clipboard?.writeText(text).then(() => setNotice("Скопировано в буфер обмена.")).catch(() => setNotice("Не удалось скопировать автоматически — выдели текст вручную."));
+    if (!navigator.clipboard) { setNotice("Буфер обмена недоступен в этом браузере — выдели текст вручную."); return; }
+    void navigator.clipboard.writeText(text).then(() => setNotice("Скопировано в буфер обмена.")).catch(() => setNotice("Не удалось скопировать автоматически — выдели текст вручную."));
   }
 
   return (
