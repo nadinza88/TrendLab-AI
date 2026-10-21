@@ -47,6 +47,7 @@ export default function App() {
   const [audience, setAudience] = useState("Женщины 30–45 лет");
   const [niche, setNiche] = useState("Образование, коммуникация, повседневная жизнь");
   const [goal, setGoal] = useState("Охваты и сохранения");
+  const [transcript, setTranscript] = useState("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(["youtube", "tiktok", "instagram"]);
   const [results, setResults] = useState<VideoItem[]>([]);
   const [status, setStatus] = useState(defaultStatus);
@@ -113,7 +114,7 @@ export default function App() {
       const response = await fetch("/api/adapt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ video, niche, audience, goal })
+        body: JSON.stringify({ video, niche, audience, goal, transcript })
       });
       const data = await response.json() as AdaptResponse & { error?: string };
       if (!response.ok) throw new Error(data.error || "Не удалось подготовить сценарий.");
@@ -205,7 +206,7 @@ export default function App() {
         {activeVideo && activeTab === "discover" && <section className="analysis-panel" id="analysis">
           <div className="analysis-header"><div><div className="section-kicker">03 / РАЗБОР И АДАПТАЦИЯ</div><h2>Преврати механику в свою идею</h2><p>AI опирается только на доступные метаданные и текст, который ты предоставишь.</p></div><button className="icon-button" onClick={() => { setActiveVideo(null); setAdaptation(null); }} title="Закрыть разбор">×</button></div>
           <div className="selected-video"><div className="selected-thumb">{activeVideo.thumbnail ? <img src={activeVideo.thumbnail} alt="" /> : <div className="thumb-placeholder"><Play size={22} /></div>}</div><div className="selected-details"><span className="platform-badge">{platformIcon(activeVideo.platform)} {platformName(activeVideo.platform)}</span><strong>{activeVideo.title}</strong><small>{activeVideo.creator || "Автор не указан"} · {duration(activeVideo.durationSeconds)} · {formatDate(activeVideo.publishedAt)}</small><a href={activeVideo.url} target="_blank" rel="noreferrer">Открыть оригинал <ExternalLink size={13} /></a></div></div>
-          <div className="adapt-inputs"><label><span>Твоя ниша</span><input value={niche} onChange={e => setNiche(e.target.value)} /></label><label><span>Аудитория</span><input value={audience} onChange={e => setAudience(e.target.value)} /></label><label><span>Цель ролика</span><select value={goal} onChange={e => setGoal(e.target.value)}><option>Охваты и сохранения</option><option>Комментарии и обсуждение</option><option>Подписки</option><option>Продажа продукта</option><option>Обучение и польза</option></select></label></div>
+          <div className="adapt-inputs"><label><span>Твоя ниша</span><input value={niche} onChange={e => setNiche(e.target.value)} /></label><label><span>Аудитория</span><input value={audience} onChange={e => setAudience(e.target.value)} /></label><label><span>Цель ролика</span><select value={goal} onChange={e => setGoal(e.target.value)}><option>Охваты и сохранения</option><option>Комментарии и обсуждение</option><option>Подписки</option><option>Продажа продукта</option><option>Обучение и польза</option></select></label></div><label className="transcript-field"><span>Транскрипт или описание сцен (необязательно)</span><textarea value={transcript} onChange={e => setTranscript(e.target.value)} placeholder="Вставь расшифровку речи или кратко опиши, что происходит в ролике. Тогда разбор будет точнее." rows={3} /></label>
           <div className="analysis-actions"><button className="search-button" onClick={() => void adaptVideo(activeVideo)} disabled={adaptBusy}>{adaptBusy ? <LoaderCircle className="spin" size={17} /> : <Sparkles size={17} />}{adaptBusy ? "Создаю варианты…" : "Разобрать и адаптировать"}</button><button className={isSaved(activeVideo) ? "secondary-button saved-action" : "secondary-button"} onClick={() => toggleSaved(activeVideo)}>{isSaved(activeVideo) ? <Check size={16} /> : <Bookmark size={16} />}{isSaved(activeVideo) ? "Сохранено" : "Сохранить ролик"}</button></div>
           {adaptation && <div className="adapt-result"><div className="adapt-title-row"><div><span className="result-tag"><Sparkles size={12} /> AI-АДАПТАЦИЯ</span><h3>{adaptation.title}</h3></div><button className="secondary-button" onClick={() => copyText(`${adaptation.title}\n\nХук: ${adaptation.hook}\n\nСтруктура:\n${adaptation.structure.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nСценарий:\n${adaptation.script}\n\nВарианты:\n${adaptation.variations.join("\n")}`)}>Скопировать всё</button></div>
             <div className="adapt-columns"><div className="adapt-block highlight-block"><span className="block-label">ПЕРВЫЕ СЕКУНДЫ / ХУК</span><p className="hook-text">{adaptation.hook}</p></div><div className="adapt-block"><span className="block-label">СТРУКТУРА ФОРМАТА</span><ol>{adaptation.structure.map((item, i) => <li key={i}>{item}</li>)}</ol></div></div>
