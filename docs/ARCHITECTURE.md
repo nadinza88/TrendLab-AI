@@ -3,8 +3,8 @@
 ## Текущая реализация
 - Frontend: React, TypeScript, Vite, responsive CSS.
 - API: Cloudflare Worker.
-- Видео-адаптер: YouTube Data API v3.
-- AI-адаптер: OpenAI-compatible `/chat/completions`.
+- Видео-адаптер: Revid Viral Video Search для YouTube Shorts, Instagram Reels и TikTok; официальный YouTube Data API v3 — резервный источник.
+- AI-адаптер: Cloudflare Workers AI по умолчанию; OpenAI-compatible `/chat/completions` — необязательный резервный провайдер.
 - Сохранённое и история: localStorage текущего браузера.
 - Хостинг-конфигурация: Wrangler assets + Worker.
 
@@ -14,17 +14,17 @@
 - `POST /api/adapt`: адаптация метаданных/предоставленного транскрипта в JSON-сценарий.
 
 ## Секреты
-`YOUTUBE_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL`. Секреты хранятся в Worker secrets или локальном `.dev.vars`, никогда не в frontend bundle или Git.
+`REVID_API_KEY`, `YOUTUBE_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL`; `CF_AI_MODEL` — необязательная переменная выбора модели Workers AI. Секреты хранятся в Worker secrets или локальном `.dev.vars`, никогда не в frontend bundle или Git.
 
 ## Источники
-Каждый источник должен быть подключаемым адаптером с общей нормализованной моделью. Прежде чем добавлять TikTok/Instagram-провайдера, проверить реальные результаты тестового запроса, доступность, условия использования, поля, задержки и стоимость. TikTok Research API не считать общедоступным коммерческим API.
+Revid Viral Video Search выполняет поиск по YouTube Shorts, Instagram Reels и TikTok; бесплатный аккаунт ограничен 20 поисками за скользящие 24 часа, поиск не расходует кредиты. Нормализованный адаптер сохраняет оригинальные URL, доступные метрики, хук и транскрипт, если провайдер их вернул. YouTube Data API v3 используется как резерв. TikTok Research API не считать общедоступным коммерческим API.
 
 ## Ограничения текущего milestone
-- Только YouTube подключается реальным поисковым адаптером, при наличии API key.
-- Instagram/TikTok честно обозначены как недоступные.
+- Revid cross-platform search requires `REVID_API_KEY`; YouTube fallback requires `YOUTUBE_API_KEY`.
 - Нет D1, аккаунтов, синхронизации между устройствами, кеширования или отдельного бюджетного биллинга.
 - YouTube API не подтверждает принадлежность каждого результата к Shorts.
-- AI анализирует только полученные метаданные и текст, который явно передал пользователь.
+- AI анализирует только полученные метаданные и доступный источник-транскрипт/текст, а не утверждает, что просмотрел ролик, если видеофайл не передавался модели.
+- Workers AI имеет бесплатную дневную квоту 10 000 neurons на аккаунт; после её исчерпания запросы могут завершаться ошибкой.
 
 ## Следующие технические этапы
 1. Локально установить зависимости и пройти CI/typecheck/build.
