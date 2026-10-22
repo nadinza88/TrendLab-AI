@@ -4,14 +4,15 @@ Personal workspace for discovering short-form video ideas, reviewing observable 
 
 ## Status
 
-This repository contains the first implementation milestone. YouTube search is available when a YouTube Data API key is configured. Instagram and TikTok are shown as unavailable until an approved provider is configured; the app never fabricates results or metrics. AI script generation requires an OpenAI-compatible API endpoint and key. Saved items use browser local storage in this initial version; production sync/auth and Cloudflare D1 are not yet enabled.
+This repository contains the first implementation milestone. Cross-platform search is available when a Revid API key is configured; the free tier allows 20 searches per rolling 24 hours. Official YouTube Data API is a fallback. AI script generation uses the Cloudflare Workers AI binding by default, with an optional OpenAI-compatible endpoint. Saved items use browser local storage in this initial version; production sync/auth and Cloudflare D1 are not yet enabled.
 
 ## Stack
 
 - React + TypeScript + Vite
 - Cloudflare Worker API
-- YouTube Data API v3 (official API)
-- OpenAI-compatible chat completions endpoint (optional)
+- Revid Viral Video Search (YouTube Shorts, Instagram Reels, TikTok; free search tier, 20 requests/day)
+- YouTube Data API v3 as fallback (optional)
+- Cloudflare Workers AI for script adaptation (free daily allocation; optional OpenAI-compatible fallback)
 
 ## Local development
 
@@ -26,12 +27,14 @@ Never commit `.dev.vars`, API keys, tokens, or real secrets.
 ## Environment variables
 
 Worker secrets/config:
-- `YOUTUBE_API_KEY` — optional, enables YouTube search.
-- `AI_API_KEY` — optional, enables script adaptation.
+- `REVID_API_KEY` — optional, enables cross-platform viral-video search (free account tier: 20 searches per rolling 24 hours).
+- `YOUTUBE_API_KEY` — optional, enables official YouTube fallback search.
+- `AI_API_KEY` — optional, overrides Workers AI with an OpenAI-compatible provider.
+- `CF_AI_MODEL` — optional, Workers AI model override; defaults to `@cf/google/gemma-4-26b-a4b-it`.
 - `AI_BASE_URL` — optional, OpenAI-compatible API base URL, default `https://api.openai.com/v1`.
 - `AI_MODEL` — optional, model name, default `gpt-4.1-mini`.
 
-Set secrets for deployment using `wrangler secret put NAME`. Do not paste credentials into source code.
+Set secrets for deployment using `wrangler secret put NAME`. Do not paste credentials into source code. Workers AI uses a Cloudflare binding and does not need a separate model API key.
 
 ## Deployment
 
