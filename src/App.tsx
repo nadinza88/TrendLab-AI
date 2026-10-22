@@ -73,7 +73,11 @@ export default function App() {
     let list = [...results];
     if (period !== "any") {
       const days = Number(period);
-      list = list.filter(v => v.publishedAt && Date.now() - new Date(v.publishedAt).getTime() <= days * 86400000);
+      const now = Date.now();
+      list = list.filter(v => {
+        const published = Date.parse(v.publishedAt || "");
+        return Number.isFinite(published) && published <= now && now - published <= days * 86400000;
+      });
     }
     if (sort === "views") list.sort((a, b) => (b.views ?? -1) - (a.views ?? -1));
     if (sort === "likes") list.sort((a, b) => (b.likes ?? -1) - (a.likes ?? -1));
@@ -119,6 +123,7 @@ export default function App() {
       const data = await response.json() as AdaptResponse & { error?: string };
       if (!response.ok) throw new Error(data.error || "Не удалось подготовить сценарий.");
       setAdaptation(data);
+      setSaved(current => current.map(item => item.video.id === video.id ? { ...item, adaptation: data } : item));
     } catch (e) { setError(e instanceof Error ? e.message : "Ошибка генерации."); }
     finally { setAdaptBusy(false); }
   }
