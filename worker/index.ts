@@ -31,7 +31,7 @@ async function searchYouTube(query: string, key: string): Promise<VideoItem[]> {
     if (response.status === 400) throw new Error("YouTube API не принял запрос. Проверь настройки API-ключа.");
     throw new Error(body.error?.message || `YouTube API вернул ошибку ${response.status}.`);
   }
-  const data = await response.json() as { items?: { id?: { videoId?: string }; snippet?: { title?: string; description?: string; channelTitle?: string; publishedAt?: string; thumbnails?: { high?: { url?: string }; medium?: { url?: string }; default?: { url?: string } } } };
+  const data = await response.json() as { items?: Array<{ id?: { videoId?: string }; snippet?: { title?: string; description?: string; channelTitle?: string; publishedAt?: string; thumbnails?: { high?: { url?: string }; medium?: { url?: string }; default?: { url?: string } } } }> };
   const ids = (data.items || []).map(item => item.id?.videoId).filter((id): id is string => Boolean(id));
   if (!ids.length) return [];
   const detailParams = new URLSearchParams({ part: "contentDetails,statistics", id: ids.join(","), key });
