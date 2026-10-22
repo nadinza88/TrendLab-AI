@@ -1,6 +1,6 @@
 # Project status — TrendLab AI
 
-Updated: 2026-10-21
+Updated: 2026-10-22
 
 ## Milestone 1 — scaffold and initial implementation
 
@@ -12,11 +12,11 @@ Updated: 2026-10-21
 - [x] OpenAI-compatible script adaptation added (requires owner-provided key and supported endpoint).
 - [x] Browser-local saved ideas and search history added.
 - [x] GitHub Actions typecheck/build workflow added.
-- [ ] CI must complete successfully on the current commit before this milestone is called verified.
+- [x] GitHub Actions passed on commit `addb6f4d`: TypeScript typecheck, Vite production build, and `wrangler deploy --dry-run`.
 - [ ] Real YouTube query cannot be verified until a valid YouTube Data API key is configured.
 - [ ] AI adaptation cannot be verified against a live provider until the owner configures an API key.
 - [ ] TikTok/Instagram are not implemented as live sources; provider research/access validation is required.
-- [ ] Production deployment is pending owner-approved Cloudflare account access and secrets.
+- [ ] Production deployment is pending owner-approved Cloudflare account access, API secrets, and access-control configuration.
 
 ## Completion policy
 
