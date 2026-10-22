@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import {
   ArrowDownWideNarrow, ArrowUpRight, Bookmark, Check, ChevronDown,
   CircleHelp, ExternalLink, Filter, Flame, Heart, History,
-  Instagram, LoaderCircle, Play, Search, Settings2, Sparkles, Trash2,
+  Instagram, LoaderCircle, Play, Search, Settings2, Share2, Sparkles, Trash2,
   TrendingUp, Youtube, Zap
 } from "lucide-react";
 import type { AdaptResponse, Platform, SavedIdea, SearchResponse, VideoItem } from "./types";
@@ -240,7 +240,7 @@ function VideoCard({ video, index, saved, onSave, onAnalyze }: { video: VideoIte
     <div className="video-card-body">
       <div className="video-card-meta"><span className="platform-badge">{platformIcon(video.platform)} {platformName(video.platform)}</span><span>{formatDate(video.publishedAt)}</span></div>
       <h3>{video.title}</h3><p className="creator">{video.creator || "Автор не указан"}</p>
-      <div className="metrics"><div><Play size={14} /><strong>{formatNumber(video.views)}</strong><small>просмотры</small></div><div><Heart size={14} /><strong>{formatNumber(video.likes)}</strong><small>лайки</small></div><div><span className="comment-glyph">▤</span><strong>{formatNumber(video.comments)}</strong><small>комменты</small></div></div>
+      <div className="metrics"><div><Play size={14} /><strong>{formatNumber(video.views)}</strong><small>просмотры</small></div><div><Heart size={14} /><strong>{formatNumber(video.likes)}</strong><small>лайки</small></div><div><span className="comment-glyph">▤</span><strong>{formatNumber(video.comments)}</strong><small>комменты</small></div><div><Share2 size={13} /><strong>{formatNumber(video.shares)}</strong><small>репосты</small></div></div>
       {video.metricNote && <p className="metric-note">{video.metricNote}</p>}
       <button className="analyze-button" onClick={onAnalyze}><Sparkles size={15} /> Разобрать формат <ArrowUpRight size={15} /></button>
     </div>
