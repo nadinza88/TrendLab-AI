@@ -13,6 +13,9 @@ export interface VideoItem {
   views?: number;
   likes?: number;
   comments?: number;
+  shares?: number;
+  transcript?: string;
+  hook?: string;
   sourceLabel: string;
   fetchedAt: string;
   metricNote?: string;
