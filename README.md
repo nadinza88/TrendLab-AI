@@ -35,7 +35,7 @@ Set secrets for deployment using `wrangler secret put NAME`. Do not paste creden
 
 ## Deployment
 
-Cloudflare deployment requires the owner's Cloudflare account, Workers permissions, and approved configuration. This repository intentionally does not deploy to production automatically. Review `docs/SETUP.md` before deploying.
+Cloudflare deployment requires the owner's Cloudflare account, Workers permissions, API secrets, and approved configuration. Before public access, protect the app with Cloudflare Access (owner allowlist) or equivalent server-side authentication and rate limiting: otherwise the public API could consume the configured YouTube quota and AI budget. This repository intentionally does not deploy to production automatically. Review `docs/SETUP.md` before deploying.
 
 ## Data-source limitations
 
