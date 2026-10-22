@@ -6,6 +6,7 @@ interface Env {
   AI_API_KEY?: string;
   AI_BASE_URL?: string;
   AI_MODEL?: string;
+  CF_AI_MODEL?: string;
 }
 interface VideoItem {
   id: string; platform: "youtube" | "tiktok" | "instagram"; title: string; description: string;
