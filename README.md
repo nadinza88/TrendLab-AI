@@ -42,7 +42,7 @@ Cloudflare deployment requires the owner's Cloudflare account, Workers permissio
 
 ## Data-source limitations
 
-YouTube's official search API has quotas and does not expose a definitive Shorts flag. The app uses short-duration search and labels the result type accurately as “короткое видео”, not as guaranteed Shorts. Official TikTok Research API access is restricted to approved researchers, so it is not treated as generally available for commercial creator use. Instagram/TikTok providers must be vetted for terms, actual fields, cost, and data rights before integration.
+Revid's cross-platform index searches YouTube Shorts, Instagram Reels and TikTok, but it is not a complete census of all posts and its free tier is limited to 20 searches per rolling 24 hours. If Revid is not configured, YouTube Data API is an optional fallback; it has quotas and does not expose a definitive Shorts flag, so results are labelled as short videos rather than guaranteed Shorts.
 
 ## Privacy
 
